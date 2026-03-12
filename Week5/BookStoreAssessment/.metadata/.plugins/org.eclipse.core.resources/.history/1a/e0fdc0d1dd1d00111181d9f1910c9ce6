@@ -1,0 +1,46 @@
+package com.bookstore.demo.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.bookstore.demo.model.Order;
+import com.bookstore.demo.repository.OrderRepository;
+
+@Service
+public class OrderService {
+
+	private OrderRepository repository;
+
+	public OrderService(OrderRepository repository) {
+		super();
+		this.repository = repository;
+	}
+	
+	public List<Order> findAll()
+	{
+		return repository.findAll();
+	}
+	
+	public Order findById(long id)
+	{
+		return repository.findById(id).orElse(null);
+	}
+	
+	public Order updateStatus(long id, String status)
+	{
+		Order o = repository.findById(id).orElse(null);
+		
+		if(o == null)
+			return null;
+		
+		o.setStatus(status);
+		
+		return repository.save(o);
+	}
+	
+	public void deleteById(long id)
+	{
+		repository.deleteById(id);
+	}
+}
